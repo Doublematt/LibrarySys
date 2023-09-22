@@ -9,6 +9,9 @@ import (
 func main() {
 	router := gin.Default()
 
+	// check connection
+	router.GET("/ping", checkConnection)
+
 	router.Run()
 }
 
