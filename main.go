@@ -19,6 +19,7 @@ func main() {
 	router.GET("/ping", checkConnection)
 	router.GET("/book/:id", getBookBtId)
 	router.GET("/books", getAllBooks)
+	router.DELETE("book/:id", deleteBookById)
 
 	router.Run()
 }
@@ -47,6 +48,20 @@ func getBookBtId(c *gin.Context) {
 
 }
 
+func deleteBookById(c *gin.Context) {
+
+	// converting string param to int value
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		panic(err)
+	}
+	if deleteBook(id) {
+		c.IndentedJSON(http.StatusOK, gin.H{"status": "Deleted"})
+	} else {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"status": "Book not found"})
+	}
+}
+
 // temporary db for development purpose
 
 var books = []Book{
@@ -71,13 +86,14 @@ func findBook(id int) Book {
 	return Book{Id: 0, Title: "Error", Author: "Book not Found!", Pages: 0}
 }
 
-func deleteBook(id int) {
+func deleteBook(id int) bool {
 
 	for i, book := range books {
 		if book.Id == id {
 			books = append(books[:i], books[i+1:]...)
-			break
+			return true
 		}
 	}
 
+	return false
 }
