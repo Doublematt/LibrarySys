@@ -70,3 +70,14 @@ func findBook(id int) Book {
 	}
 	return Book{Id: 0, Title: "Error", Author: "Book not Found!", Pages: 0}
 }
+
+func deleteBook(id int) {
+
+	for i, book := range books {
+		if book.Id == id {
+			books = append(books[:i], books[i+1:]...)
+			break
+		}
+	}
+
+}
