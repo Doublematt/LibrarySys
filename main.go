@@ -18,6 +18,7 @@ func main() {
 	// check connection
 	router.GET("/ping", checkConnection)
 	router.GET("/book/:id", getBookBtId)
+	router.GET("/books", getAllBooks)
 
 	router.Run()
 }
@@ -28,6 +29,10 @@ func main() {
 
 func checkConnection(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, gin.H{"message": "Pong"})
+}
+
+func getAllBooks(c *gin.Context) {
+	c.IndentedJSON(http.StatusOK, books)
 }
 
 func getBookBtId(c *gin.Context) {
@@ -46,6 +51,9 @@ func getBookBtId(c *gin.Context) {
 
 var books = []Book{
 	{Id: 1, Title: "The beginning", Author: "Dan Brown"},
+	{Id: 2, Title: "Harry Potter and philosopher stone", Author: " J. K. Rowling"},
+	{Id: 3, Title: "Sword of Destiny", Author: "Jacek Sapkowski"},
+	{Id: 4, Title: "The Blood of Strangers", Author: "Frank Hyuler"},
 }
 
 //
