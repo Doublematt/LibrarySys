@@ -21,6 +21,7 @@ func main() {
 	router.GET("/books", getAllBooks)
 	router.DELETE("/book/:id", deleteBookById)
 	router.POST("/book", addBook)
+	router.PUT("/book", updateBook)
 
 	router.Run()
 }
@@ -85,15 +86,26 @@ func addBook(c *gin.Context) {
 
 }
 
+func updateBook(c *gin.Context) {
+
+	var newBook Book
+	if err := c.BindJSON(&newBook); err != nil {
+		panic("error occured while loading new book")
+	}
+	updateBookById(newBook)
+
+	c.IndentedJSON(http.StatusCreated, newBook)
+}
+
 //
 // secondary methods
 //
 
-func updateBookById(id int, updatedBook Book) {
+func updateBookById(updatedBook Book) {
 
-	if findBook(id).Id != 0 {
+	if findBook(updatedBook.Id).Id != 0 {
 		for i, book := range books {
-			if book.Id == id {
+			if book.Id == updatedBook.Id {
 				var books_copy []Book
 				books_copy = append(books[:i], updatedBook)
 				books = append(books_copy, books[i+1:]...)
