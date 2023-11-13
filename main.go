@@ -85,9 +85,22 @@ func addBook(c *gin.Context) {
 
 }
 
+
 //
 // secondary methods
 //
+
+func updateBookById(id int, updatedBook Book){
+
+	if findBook(id).Id != 0{
+		for i, book := range books {
+			if book.Id == id {
+				books = append(books[:i], updatedBook, books[i+1:]...)
+				return true
+			}
+	}
+
+}
 
 func findBook(id int) Book {
 
